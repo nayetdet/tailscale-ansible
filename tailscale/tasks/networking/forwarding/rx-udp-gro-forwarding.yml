@@ -1,0 +1,33 @@
+---
+- name: Install ethtool
+  ansible.builtin.apt:
+    name: ethtool
+    state: present
+    update_cache: true
+
+- name: Install UDP GRO forwarding service
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/tailscale-gro-forwarding.service
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Unit]
+      Description=Enable UDP GRO forwarding for Tailscale
+      Wants=network-online.target
+      After=network-online.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/sbin/ethtool -K {{ ansible_facts["default_ipv4"]["interface"] }} rx-udp-gro-forwarding on rx-gro-list off
+      RemainAfterExit=yes
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Enable and start UDP GRO forwarding service
+  ansible.builtin.systemd_service:
+    name: tailscale-gro-forwarding.service
+    daemon_reload: true
+    state: started
+    enabled: true

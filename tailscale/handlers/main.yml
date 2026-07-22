@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for tailscale
+- name: Restart SSH
+  ansible.builtin.service:
+    name: ssh
+    state: restarted

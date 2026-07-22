@@ -1,0 +1,8 @@
+- name: Include firewall tasks
+  ansible.builtin.import_tasks: networking/firewall/main.yml
+
+- name: Include forwarding tasks
+  ansible.builtin.import_tasks: networking/forwarding/main.yml
+
+- name: Include SSH tasks
+  ansible.builtin.import_tasks: networking/ssh/main.yml

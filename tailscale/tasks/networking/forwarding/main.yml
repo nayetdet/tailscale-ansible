@@ -1,0 +1,6 @@
+---
+- name: Include IP forwarding tasks
+  ansible.builtin.import_tasks: ip-forwarding.yml
+
+- name: Include UDP and GRO forwarding tasks
+  ansible.builtin.import_tasks: rx-udp-gro-forwarding.yml
